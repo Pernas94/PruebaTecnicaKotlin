@@ -6,4 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".activities.EpisodeActivity">
 
+
+    <ImageView
+        android:id="@+id/ep_image"
+        android:layout_width="290dp"
+        android:layout_height="300dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <SeekBar
+        android:id="@+id/ep_seekbar"
+        android:layout_width="0dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="@+id/ep_image"
+        app:layout_constraintStart_toStartOf="@+id/ep_image"
+        app:layout_constraintTop_toBottomOf="@+id/ep_image" />
+
+    <TextView
+        android:id="@+id/ep_title"
+        android:layout_width="320dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:gravity="top | center"
+        android:text="Podcast title"
+        android:textSize="17sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/ep_image"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ep_image"
+        app:layout_constraintTop_toBottomOf="@+id/ep_seekbar"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <TextView
+        android:id="@+id/ep_description"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="24dp"
+
+        android:gravity="top | center"
+        android:scrollbars="vertical"
+        android:text="This is an example description to see how the final result would be."
+        app:layout_constraintBottom_toTopOf="@+id/ep_playButton"
+        app:layout_constraintEnd_toEndOf="@+id/ep_title"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/ep_title"
+        app:layout_constraintTop_toBottomOf="@+id/ep_title" />
+
+    <ImageButton
+        android:id="@+id/ep_playButton"
+        android:layout_width="90dp"
+        android:layout_height="87dp"
+        android:layout_marginBottom="24dp"
+        android:scaleType="centerCrop"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/ep_image"
+        app:layout_constraintStart_toStartOf="@+id/ep_image"
+        app:srcCompat="@drawable/ic_baseline_play_circle_50" />
+
+    <ProgressBar
+        android:id="@+id/ep_progressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

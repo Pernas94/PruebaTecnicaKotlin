@@ -26,9 +26,18 @@ class EpisodeAdapter(var contexto: Context, var episodes:ArrayList<Episode>, var
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val episode = episodes[position]
-        var date = episode.releaseDate.substring(0,episode.releaseDate.indexOf("T"))
+        var auxDate = episode.releaseDate.substring(0,episode.releaseDate.indexOf("T")).split("-")
+        var date = auxDate[2]+"/"+auxDate[1]+"/"+auxDate[0]
 
-        holder.title.text = episode.trackName
+        var name = episode.trackName
+        if(episode.trackName.length>60) {
+            var lastSpace= episode.trackName.substring(0, 60).lastIndexOf(" ")
+            name = episode.trackName.substring(0,lastSpace)+"..."
+        }
+
+
+
+        holder.title.text = name
         holder.date.text = date
         holder.duration.text = (episode.duration/1000/60).toString()+" min"
 

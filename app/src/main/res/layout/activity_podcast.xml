@@ -4,65 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.PodcastActivity">
+    tools:context=".activities.PodcastActivity"
+    >
 
     <ImageView
         android:id="@+id/pod_image"
         android:layout_width="0dp"
-        android:layout_height="200dp"
+        android:layout_height="280dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:scaleType="centerCrop"/>
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/shadow"
+        app:layout_constraintBottom_toBottomOf="@+id/pod_image"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/pod_image" />
+
 
     <TextView
         android:id="@+id/pod_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Titulo de podcast"
-        android:textStyle = "bold"
-        android:textSize = "30sp"
-        android:gravity = "center"
+        android:gravity="center"
         android:paddingTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pod_image" />
+        android:text="Titulo de podcast"
+        android:textColor="@color/black"
+        android:textSize="28sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/pod_author"
+        app:layout_constraintEnd_toEndOf="@+id/pod_image"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/pod_image" />
 
     <TextView
         android:id="@+id/pod_author"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Author"
-        android:textStyle = "bold"
-        android:textSize = "20sp"
-        android:gravity = "center"
+        android:layout_marginBottom="16dp"
+        android:gravity="center"
         android:paddingTop="5dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pod_title" />
+        android:text="Author"
+        android:textColor="@color/blue"
+        android:textSize="20sp"
+        android:textStyle="bold | italic"
+        app:layout_constraintBottom_toBottomOf="@+id/pod_image"
+        app:layout_constraintEnd_toEndOf="@+id/pod_title"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/pod_title" />
 
     <TextView
         android:id="@+id/pod_summary"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
-        android:text="This is an example description to see how the final result would be."
-        android:scrollbars = "vertical"
-        android:gravity = "top | center"
+        android:gravity="top | center"
         android:paddingTop="10dp"
-
+        android:paddingHorizontal="15dp"
+        android:scrollbars="vertical"
+        android:text="This is an example description to see how the final result would be."
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pod_author" />
+        app:layout_constraintTop_toBottomOf="@+id/pod_image" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pod_recycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/pod_summary" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <ProgressBar
         android:id="@+id/pod_progressBar"
@@ -72,5 +90,18 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Episodes"
+        android:textColor="@color/black"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/pod_summary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

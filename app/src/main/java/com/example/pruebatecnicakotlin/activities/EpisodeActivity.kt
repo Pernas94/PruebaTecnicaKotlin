@@ -31,7 +31,7 @@ class EpisodeActivity : AppCompatActivity() {
     private lateinit var episode: Episode
     private lateinit var podcastImg:String
     private lateinit var mediaPlayer: MediaPlayer
-    private var audioPlaying = false
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -44,43 +44,20 @@ class EpisodeActivity : AppCompatActivity() {
             podcastImg = intent.extras?.getString("imageUrl") as String
         }
 
-        Log.d("Mau", episode.audioUrl)
-
 
         initElements()
-
         mediaPlayer  = MediaPlayer()
 
+        //Launch audio corroutine to prepare the MediaPlayer async
+        audioCorroutine()
 
-        progressBar.visibility = View.VISIBLE
-        CoroutineScope(Dispatchers.IO).launch {
+        //Set behaviour of Play/Pause button
+        playPauseAudio()
 
-            mediaPlayer.setDataSource(episode.audioUrl)
-            mediaPlayer.prepare()
-            mediaPlayer.setOnPreparedListener {
-                runOnUiThread {
-                    btnPlay.isEnabled = true
-                    btnPlay.visibility = View.VISIBLE
-                    progressBar.visibility = View.GONE
-                }
-            }
-        }
-
-
-
-
-        btnPlay.setOnClickListener {
-            if(!mediaPlayer.isPlaying){
-
-                mediaPlayer.start()
-                btnPlay.setImageResource(R.drawable.ic_baseline_pause_circle_50)
-
-            }else{
-                mediaPlayer.pause()
-                btnPlay.setImageResource(R.drawable.ic_baseline_play_circle_50)
-            }
-        }
     }
+
+
+
 
     private fun initElements() {
 
@@ -102,12 +79,44 @@ class EpisodeActivity : AppCompatActivity() {
         btnPlay = findViewById(R.id.ep_playButton)
         btnPlay.isEnabled = false
 
+
         progressBar = findViewById(R.id.ep_progressBar)
+        progressBar.visibility = View.VISIBLE
 
         //mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
     }
 
 
+
+    private fun audioCorroutine() {
+        CoroutineScope(Dispatchers.IO).launch {
+
+            mediaPlayer.setDataSource(episode.audioUrl)
+            mediaPlayer.prepare()
+            mediaPlayer.setOnPreparedListener {
+                runOnUiThread {
+                    btnPlay.isEnabled = true
+                    btnPlay.visibility = View.VISIBLE
+                    progressBar.visibility = View.GONE
+                }
+            }
+        }
+    }
+
+
+    private fun playPauseAudio() {
+        btnPlay.setOnClickListener {
+            if(!mediaPlayer.isPlaying){
+
+                mediaPlayer.start()
+                btnPlay.setImageResource(R.drawable.ic_baseline_pause_circle_50)
+
+            }else{
+                mediaPlayer.pause()
+                btnPlay.setImageResource(R.drawable.ic_baseline_play_circle_50)
+            }
+        }
+    }
 
     fun seekbarEvent(){
         skSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{

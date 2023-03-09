@@ -3,6 +3,8 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Users/panch/AndroidStudioProjects/PruebaTecnicaKotlin/app/src/main/res/drawable/ic_baseline_pause_circle_50.xml" value="0.2095" />
+        <entry key="..\:/Users/panch/AndroidStudioProjects/PruebaTecnicaKotlin/app/src/main/res/drawable/shadow.xml" value="0.2095" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/PruebaTecnicaKotlin/app/src/main/res/layout/activity_episode.xml" value="0.275" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/PruebaTecnicaKotlin/app/src/main/res/layout/activity_main.xml" value="0.275" />
         <entry key="..\:/Users/panch/AndroidStudioProjects/PruebaTecnicaKotlin/app/src/main/res/layout/activity_podcast.xml" value="0.275" />

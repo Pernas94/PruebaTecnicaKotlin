@@ -29,8 +29,6 @@ class PodcastAdapter(var contexto: Activity, var podcasts: ArrayList<Podcast>):R
 
         val podcast = podcasts[position]
         val image = podcast.image.last().url
-
-
         Picasso.get().load(image).into(holder.img)
 
         holder.marco.setOnClickListener {
@@ -50,6 +48,7 @@ class PodcastAdapter(var contexto: Activity, var podcasts: ArrayList<Podcast>):R
     inner class ViewHolder(view: View): RecyclerView.ViewHolder(view){
         val img : ImageView
         val marco: CardView
+
         init{
             img = view.findViewById(R.id.card_podcast_img)
             marco = view.findViewById(R.id.card_marco)

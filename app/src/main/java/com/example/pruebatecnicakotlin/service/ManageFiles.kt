@@ -8,6 +8,8 @@ import com.example.pruebatecnicakotlin.dataModels.Episode
 import com.example.pruebatecnicakotlin.dataModels.Podcast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileReader
 import java.io.IOException
@@ -31,6 +33,7 @@ class ManageFiles {
             var aAgregar: ArrayList<Podcast> = Gson().fromJson(FileReader(filePath), arrayListPodcastType)
             podcasts.clear()
             podcasts.addAll(aAgregar)
+            Log.i("AppLog", "Leído archivo-> "+filePath)
         }
 
 
@@ -41,15 +44,13 @@ class ManageFiles {
             //var aAgregar: ArrayList<Podcast> = Gson().fromJson(FileReader(filesDir.path+"/"+FILE_NAME), arrayListPodcastType)
             var aAgregar: ArrayList<Episode> = Gson().fromJson(FileReader(filePath), arrayListType)
 
-            /*for(pod in aAgregar){
-                Log.d("Mau", pod.name.name+"-> https://itunes.apple.com/lookup?id="+pod.id.attrib.id)
-            }*/
             arraylist.clear()
             arraylist.addAll(aAgregar)
+            Log.i("AppLog", "Leído archivo-> "+filePath)
         }
 
 
-        fun createFile(context: Context, array: ArrayList<Podcast>, fileName:String){
+        fun <T> createFile(context: Context, array: ArrayList<T>, fileName:String){
 
             try{
                 //Si el archivo no existe, lo creo y lo relleno con la respuesta en formato Json
@@ -57,13 +58,13 @@ class ManageFiles {
                 val json = Gson().toJson(array)
                 outStream.write(json.encodeToByteArray())
                 outStream.close()
+                Log.i("AppLog", "Creado archivo-> "+fileName)
 
 
             }catch(e: IOException){
-                Log.e("MauError", e.message.toString())
+                Log.e("AppLog", e.message.toString())
             }
         }
-
     }
 
 }

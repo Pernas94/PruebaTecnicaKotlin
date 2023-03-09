@@ -16,6 +16,7 @@ import com.example.pruebatecnicakotlin.dataModels.Episode
 import com.example.pruebatecnicakotlin.dataModels.Podcast
 import com.example.pruebatecnicakotlin.service.APIService
 import com.example.pruebatecnicakotlin.service.ManageFiles
+import com.example.pruebatecnicakotlin.service.RetrofitAux
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.CoroutineScope
@@ -30,11 +31,11 @@ import kotlin.io.path.exists
 class PodcastActivity : AppCompatActivity() {
 
     //Views
-    val image : ImageView by lazy{findViewById(R.id.pod_image)}
-    val title : TextView by lazy{findViewById(R.id.pod_title)}
-    val author: TextView by lazy{findViewById(R.id.pod_author)}
-    val summary: TextView by lazy{findViewById(R.id.pod_summary)}
-    val progressBar : ProgressBar by lazy{findViewById(R.id.pod_progressBar)}
+    private lateinit var image : ImageView
+    private lateinit var title : TextView
+    private lateinit var author: TextView
+    private lateinit var summary: TextView
+    private lateinit var loadingIcon : ProgressBar
 
     //Recycler
     private lateinit var recycler: RecyclerView
@@ -52,7 +53,6 @@ class PodcastActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_podcast)
 
-        summary.movementMethod = ScrollingMovementMethod() //makes textview scrollable
 
         if(intent!=null){
             podcast = intent.getSerializableExtra("selectedPodcast") as Podcast
@@ -60,11 +60,9 @@ class PodcastActivity : AppCompatActivity() {
             initElements(podcast)
         }
 
-        FILE_NAME = podcast?.name?.name+".json"
-        FILE_PATH = filesDir.path+"/"+FILE_NAME
 
         if(Paths.get(FILE_PATH).exists() && ManageFiles.fileValid(86400000, FILE_PATH)){
-            Log.d("Mau", "Podcast encontrado en files")
+            Log.i("AppLog", "Archivo encontrado en Files-> "+FILE_PATH)
             ManageFiles.showFileEpisode(episodes, FILE_PATH)
 
         }else{
@@ -72,21 +70,33 @@ class PodcastActivity : AppCompatActivity() {
             getPodcast("lookup?id=${podcast?.id?.attrib?.id}&entity=podcastEpisode&limit=9") //Llamada podcast completo
         }
 
-
         initRecycler()
     }
 
     private fun initElements(podcast: Podcast?) {
+
+        image = findViewById(R.id.pod_image)
         Picasso.get().load(podcast?.image?.last()?.url).into(image)
+
+
+        title = findViewById(R.id.pod_title)
         title.text = podcast?.name?.name
+
+        author = findViewById(R.id.pod_author)
         author.text = podcast?.artist?.name
+
+        summary = findViewById(R.id.pod_summary)
         summary.text = podcast?.summary?.summary
+        summary.movementMethod = ScrollingMovementMethod() //makes textview scrollable
+
+        loadingIcon = findViewById(R.id.pod_progressBar)
+
+        FILE_NAME = podcast?.name?.name+".json"
+        FILE_PATH = filesDir.path+"/"+FILE_NAME
     }
 
 
     private fun initRecycler(){
-        //Filter out the podcast information item [0]
-
 
         recycler = findViewById(R.id.pod_recycler)
         adapter = EpisodeAdapter(this, episodes, podcast?.image?.last()!!.url)
@@ -95,18 +105,18 @@ class PodcastActivity : AppCompatActivity() {
     }
 
     private fun getPodcast(query:String){
+        var context = this
+        loadingIcon.visibility = View.VISIBLE
 
-        progressBar.visibility = View.VISIBLE
         CoroutineScope(Dispatchers.IO).launch{
 
-
-            val call = getRetrofit().create(APIService::class.java).getFullPodcast(query)
-            Log.i("Mau", "Llamada podcast completo API-> "+call.toString())
+            val call = RetrofitAux.getRetrofit().create(APIService::class.java).getFullPodcast(query)
             val response = call.body()
 
             runOnUiThread {
                 if(call.isSuccessful){
 
+                    Log.i("AppLog", "Llamada a API (getPodcast) exitosa.")
                     //Extraigo episodios
                     var aAgregar = response?.results ?: arrayListOf()
 
@@ -114,47 +124,20 @@ class PodcastActivity : AppCompatActivity() {
                     aAgregar = aAgregar.filter{it.kind == "podcast-episode"} as ArrayList<Episode>
 
 
-                    createFile(aAgregar, FILE_NAME)
+                    ManageFiles.createFile(context, aAgregar, FILE_NAME)
 
                     episodes.clear()
                     episodes.addAll(aAgregar)
                     adapter.notifyDataSetChanged()
-                    progressBar.visibility = View.GONE
+                    loadingIcon.visibility = View.GONE
 
 
                 }else{
-                    Log.e("Mau", call.errorBody().toString())
+                    Log.e("AppLog", call.errorBody().toString())
                 }
             }
 
         }
     }
-
-    fun createFile(array: ArrayList<Episode>, fileName:String){
-
-        try{
-            //Si el archivo no existe, lo creo y lo relleno con la respuesta en formato Json
-            //TODO
-            val outStream = openFileOutput(fileName, AppCompatActivity.MODE_PRIVATE)
-            val json = Gson().toJson(array)
-            outStream.write(json.encodeToByteArray())
-            Log.d("Mau", "Archivo creado con "+fileName)
-            outStream.close()
-
-
-        }catch(e: IOException){
-            Log.e("MauError", e.message.toString())
-        }
-    }
-
-    fun getRetrofit(): Retrofit {
-        return Retrofit.Builder().baseUrl("https://itunes.apple.com/").
-        addConverterFactory(GsonConverterFactory.create()).build()
-
-        //https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json
-        //https://itunes.apple.com/lookup?id={podcastId}
-        //https://itunes.apple.com/lookup?id=1535809341&entity=podcastEpisode&limit=9
-    }
-
 
 }

@@ -1,5 +1,6 @@
 package com.example.pruebatecnicakotlin.service
 
+import com.example.pruebatecnicakotlin.dataModels.PodcastResponse
 import com.example.pruebatecnicakotlin.dataModels.Top100Response
 import retrofit2.Response
 import retrofit2.http.GET
@@ -10,5 +11,8 @@ interface APIService {
 
     @GET
     suspend fun getTop100Podcasts(@Url url:String): Response<Top100Response>
+
+    @GET
+    suspend fun getFullPodcast(@Url url:String):Response<PodcastResponse>
 
 }

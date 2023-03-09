@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), SearchView.OnQueryTextListener {
         try{
             Toast.makeText(this, "Creating file $fileName", Toast.LENGTH_SHORT).show()
 
-            //Si el archivo no existe, lo creo y lo relleno con la respuesta en formato Json
+            //Si eldass archivo no existe, lo creo y lo relleno con la respuesta en formato Json
             //TODO
             val outStream = this@MainActivity.openFileOutput(fileName, AppCompatActivity.MODE_PRIVATE)
             val json = Gson().toJson(array)

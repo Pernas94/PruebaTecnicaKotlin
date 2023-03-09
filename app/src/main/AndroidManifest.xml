@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PruebaTecnicaKotlin">
         <activity
+            android:name=".activities.EpisodeActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.PodcastActivity"
             android:exported="false" />
         <activity

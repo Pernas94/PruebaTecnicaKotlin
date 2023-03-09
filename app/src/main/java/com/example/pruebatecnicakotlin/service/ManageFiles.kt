@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.pruebatecnicakotlin.dataModels.Episode
 import com.example.pruebatecnicakotlin.dataModels.Podcast
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -30,6 +31,21 @@ class ManageFiles {
             var aAgregar: ArrayList<Podcast> = Gson().fromJson(FileReader(filePath), arrayListPodcastType)
             podcasts.clear()
             podcasts.addAll(aAgregar)
+        }
+
+
+        fun showFileEpisode(arraylist: ArrayList<Episode>, filePath:String) {
+
+            var arrayListType = object : TypeToken<ArrayList<Episode>>() {}.type
+
+            //var aAgregar: ArrayList<Podcast> = Gson().fromJson(FileReader(filesDir.path+"/"+FILE_NAME), arrayListPodcastType)
+            var aAgregar: ArrayList<Episode> = Gson().fromJson(FileReader(filePath), arrayListType)
+
+            /*for(pod in aAgregar){
+                Log.d("Mau", pod.name.name+"-> https://itunes.apple.com/lookup?id="+pod.id.attrib.id)
+            }*/
+            arraylist.clear()
+            arraylist.addAll(aAgregar)
         }
 
 

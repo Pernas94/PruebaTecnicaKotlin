@@ -69,8 +69,9 @@ class EpisodeActivity : AppCompatActivity() {
 
         skSeekbar = findViewById(R.id.ep_seekbar)
         skSeekbar.progress = 0
-        //skSeekbar.max = (episode.duration/1000/60).toInt()
-        skSeekbar.max = (episode.duration).toInt()
+        //skSeekbar.max = (episode.duration).toInt()
+        skSeekbar.max = episode.duration.toInt()
+
         seekbarEvent()
 
 
@@ -94,11 +95,21 @@ class EpisodeActivity : AppCompatActivity() {
 
 
     private fun audioCorroutine() {
+        var context = this
         CoroutineScope(Dispatchers.IO).launch {
 
-            mediaPlayer.setDataSource(episode.audioUrl)
-            mediaPlayer.prepare()
+            try{
+                mediaPlayer.setDataSource(episode.audioUrl)
+                mediaPlayer.prepare()
+            }catch (e:Exception){
+                Log.i("AppLog", e.message.toString())
+                Toast.makeText(context, "Error cargando el audio", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
+            }
+
+
             mediaPlayer.setOnPreparedListener {
+
                 runOnUiThread {
                     btnPlay.isEnabled = true
                     btnPlay.visibility = View.VISIBLE

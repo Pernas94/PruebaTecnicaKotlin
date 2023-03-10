@@ -63,10 +63,15 @@ class EpisodeActivity : AppCompatActivity() {
 
         ivImage = findViewById(R.id.ep_image)
         Picasso.get().load(podcastImg).into(ivImage)
+        ivImage.setOnClickListener {
+            onBackPressed()
+        }
 
         skSeekbar = findViewById(R.id.ep_seekbar)
-
-        //seekbarEvent()
+        skSeekbar.progress = 0
+        //skSeekbar.max = (episode.duration/1000/60).toInt()
+        skSeekbar.max = (episode.duration).toInt()
+        seekbarEvent()
 
 
         txtTitle = findViewById(R.id.ep_title)
@@ -83,7 +88,7 @@ class EpisodeActivity : AppCompatActivity() {
         progressBar = findViewById(R.id.ep_progressBar)
         progressBar.visibility = View.VISIBLE
 
-        //mediaPlayer!!.setAudioStreamType(AudioManager.STREAM_MUSIC)
+
     }
 
 
@@ -119,10 +124,10 @@ class EpisodeActivity : AppCompatActivity() {
     }
 
     fun seekbarEvent(){
+
         skSeekbar.setOnSeekBarChangeListener(object: SeekBar.OnSeekBarChangeListener{
             override fun onProgressChanged(p0: SeekBar?, pos: Int, changed: Boolean) {
                 if(changed){
-                    Log.i("Mau", "Mediaplayer.seekTo()-> $pos")
                     mediaPlayer.seekTo(pos)
                 }
             }
